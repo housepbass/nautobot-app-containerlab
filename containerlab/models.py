@@ -10,8 +10,14 @@ class Topology(PrimaryModel):
         to="extras.DynamicGroup",
         on_delete=models.CASCADE,
         related_name="containerlab_topologies",
+        help_text="DynamicGroup from which to build the lab topology",
         blank=True,
         null=True,
+    )
+    topology_file = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Rendered topology file",
     )
     git_repository = models.ForeignKey(
         to="extras.GitRepository",

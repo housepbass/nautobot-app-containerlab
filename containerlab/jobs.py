@@ -1,6 +1,7 @@
 """Containerlab Jobs."""
 import re
 import os
+from pathlib import Path
 
 from nautobot.extras.jobs import get_task_logger
 from nautobot.apps.jobs import Job, ObjectVar, register_jobs
@@ -69,7 +70,14 @@ class GenerateContainerlabTopology(Job):
         """Job run method."""
         self.logger.info("Topology Model.", extra={"object": topology})
         repo = GitRepo(topology.git_repository)
-        Path('/opt/nautobot/git/clab/git_test.txt').touch()
+        with open(os.path.join(os.path.dirname(__file__), "templates", "containerlab_topologies", "topologies.j2")) as handle:
+        #with open("./templates/containerlab_topologies/topologies.j2", "rt") as handle:
+            template = handle.read()
+        topology_data = render_jinja2(template_code=template, context={"topology": topology})
+        topology_path = f"/opt/nautobot/git/clab/{topology.name}"
+        Path(topology_path).mkdir(parents=False, exist_ok=True)
+        with open(f"{topology_path}/{topology.name}.yml", "w") as t_file:
+                t_file.write(topology_data)
         repo.commit_with_added("Pushing to repo.")
         repo.push()
 
