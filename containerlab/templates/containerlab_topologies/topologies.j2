@@ -1,1 +1,25 @@
-TOPO {{ topology.name }} PUSHED VIA JOB
+---
+name: {{ topology.name }}
+
+{# mgmt:
+  network: custom_mgmt
+  ipv4-subnet: 172.100.100.0/24 #}
+
+topology:
+  {# kinds:
+    ceos:
+      image: ceos:4.30.5M #}
+  nodes:
+    {% for device in topology.dynamic_group.members.all() %}
+    {{ device }}:
+      kind: ceos
+      {# mgmt-ipv4: 172.100.100.2 #}
+    {% endfor %}
+
+  {# links:
+    - endpoints: ["dc1-spine-1:eth1", "dc1-leaf-1:eth1"]
+    - endpoints: ["dc1-spine-1:eth2", "dc1-leaf-2:eth1"]
+    - endpoints: ["dc1-spine-1:eth3", "dc1-leaf-3:eth1"]
+    - endpoints: ["dc1-spine-2:eth1", "dc1-leaf-1:eth2"]
+    - endpoints: ["dc1-spine-2:eth2", "dc1-leaf-2:eth2"]
+    - endpoints: ["dc1-spine-2:eth3", "dc1-leaf-3:eth2"] #}

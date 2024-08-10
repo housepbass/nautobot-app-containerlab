@@ -12,7 +12,7 @@ class TopologyTable(BaseTable):
     tags = TagColumn(url_name="plugins:containerlab:topology_list")
     actions = ButtonsColumn(Topology)
 
-    class Meta:
+    class Meta(BaseTable.Meta):
         """Meta class."""
         model = Topology
         fields = ("pk", "name", "dynamic_group", "git_repository", "tags", "actions")        

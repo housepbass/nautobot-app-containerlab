@@ -26,7 +26,7 @@ def refresh_git(repository_record, job_result, delete=False):  # pylint: disable
             continue
         topology_record = topology_record[0]
         with open(os.path.join(topology_path, folder, f"{topology_record.name}.yml")) as fd:
-            topology_data = yaml.safe_load(fd)
+            topology_data = fd.read()
 
         if topology_record.topology_file == topology_data:
             msg = "Topology already up to date."
